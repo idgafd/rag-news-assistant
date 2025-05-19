@@ -38,29 +38,30 @@ with col_image:
 st.markdown("---")
 st.markdown("""
 <style>
-div.stButton > button:first-child {
-    background-color: #e49bff;      /* light pink-purple */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.6em 1.5em;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    box-shadow: 0 4px 8px rgba(228, 155, 255, 0.4);
+div.stButton > button {
+    background-color: #e49bff !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.6em 1.5em !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    transition: background-color 0.3s ease, transform 0.1s ease !important;
+    box-shadow: 0 4px 8px rgba(228, 155, 255, 0.4) !important;
 }
 
-div.stButton > button:first-child:hover {
-    background-color: #c35bfa;      /* deeper purple on hover */
-    box-shadow: 0 6px 12px rgba(195, 91, 250, 0.5);
+div.stButton > button:hover {
+    background-color: #c35bfa !important;
+    box-shadow: 0 6px 12px rgba(195, 91, 250, 0.5) !important;
 }
 
-div.stButton > button:first-child:active {
-    background-color: #a12ed4;      /* pressed effect */
-    transform: scale(0.98);
+div.stButton > button:active {
+    background-color: #a12ed4 !important;
+    transform: scale(0.98) !important;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 submit_button = st.button("Go fetch the wisdom")
 
