@@ -95,9 +95,7 @@ def search_similar_articles(prompt: str, top_k: int = 5, date_from: Optional[str
 
 
 def get_articles_by_date_range(date_from: str, date_to: str) -> List:
-    candidates = search_points_by_date_range(date_from, date_to)
-
-    return clean_points(candidates.points)
+    return search_points_by_date_range(date_from, date_to)
 
 
 def find_by_uploaded_image(image_path_or_url: str, prompt: Optional[str] = None) -> List:
