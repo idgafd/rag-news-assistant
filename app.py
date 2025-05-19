@@ -5,6 +5,10 @@ from openai_wrapper import route_user_query, answer_user_query, fallback_answer_
 from core_pipeline import execute_routed_call, format_resources_block
 from config import OPENAI_API_KEY
 
+import itertools
+import time
+import random
+
 
 api_key = OPENAI_API_KEY
 if not api_key:
@@ -20,11 +24,6 @@ st.markdown(
 )
 
 st.markdown("---")
-# col1, col2 = st.columns([3, 1])
-# with col1:
-#     user_query = st.text_input("So, what are you curious about?", placeholder="e.g. What happened in AI last month?")
-# with col2:
-#     uploaded_image = st.file_uploader("Optional visual evidence", type=["jpg", "jpeg", "png"])
 
 col_query, col_image = st.columns([2, 1])
 
@@ -37,25 +36,63 @@ with col_image:
     uploaded_image = st.file_uploader("", type=["jpg", "jpeg", "png"])
 
 st.markdown("---")
+st.markdown("""
+<style>
+div.stButton > button:first-child {
+    background-color: #e49bff;      /* light pink-purple */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6em 1.5em;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 8px rgba(228, 155, 255, 0.4);
+}
+
+div.stButton > button:first-child:hover {
+    background-color: #c35bfa;      /* deeper purple on hover */
+    box-shadow: 0 6px 12px rgba(195, 91, 250, 0.5);
+}
+
+div.stButton > button:first-child:active {
+    background-color: #a12ed4;      /* pressed effect */
+    transform: scale(0.98);
+}
+</style>
+""", unsafe_allow_html=True)
+
 submit_button = st.button("Go fetch the wisdom")
 
 if submit_button and user_query:
     with st.spinner("Consulting the archives..."):
 
-        # Save image if uploaded
         image_path = None
         if uploaded_image:
             image_path = f"/tmp/{uploaded_image.name}"
             with open(image_path, "wb") as f:
                 f.write(uploaded_image.getbuffer())
 
-        # Route → Search → Answer
         call = route_user_query(user_query, image_path=image_path)
         articles = execute_routed_call(call)
 
-        # Display Answer
         st.markdown("---")
-        st.subheader("A possibly intelligent answer")
+        subheader_variants = [
+            "A possibly intelligent answer",
+            "May or may not be hallucinated",
+            "This came from the thinking box",
+            "Generated in a GPU-powered existential crisis",
+            "Not bad for a bunch of math",
+            "If this is wrong, it’s a feature, not a bug",
+            "Made with <3 and linear algebra",
+            "Verbal output of cold, hard matrices",
+            "Hallucinated responsibly™",
+            "Compiled by algorithms with strong opinions",
+            "Definitely not copied from Wikipedia (probably)",
+            "Not responsible for any life decisions made after reading this"
+        ]
+        st.subheader(random.choice(subheader_variants))
+
         if articles:
             answer = answer_user_query(user_query, articles)
             st.write(answer)
