@@ -13,5 +13,6 @@ beautifulsoup4==4.13.4
 bs4==0.0.2
 soupsieve==2.7
 torch==2.7.0
+torchvision==0.22.0
 transformers==4.51.3
 
