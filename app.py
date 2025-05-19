@@ -26,20 +26,18 @@ st.markdown("---")
 # with col2:
 #     uploaded_image = st.file_uploader("Optional visual evidence", type=["jpg", "jpeg", "png"])
 
-# st.markdown("---")
-# submit_button = st.button("Go fetch the wisdom")
-with st.form("query_form"):
-    col1, col2 = st.columns([3, 1])
+col_query, col_image = st.columns([2, 1])
 
-    with col1:
-        st.markdown("##### What’s on your mind today, human?")
-        user_query = st.text_input("", placeholder="e.g. What's up with AI in April 2024?")
+with col_query:
+    st.markdown("##### What’s on your mind today, human?")
+    user_query = st.text_input("", placeholder="e.g. What's up with AI in April 2024?")
 
-    with col2:
-        st.markdown("##### Got receipts?")
-        uploaded_image = st.file_uploader("", type=["jpg", "jpeg", "png"])
+with col_image:
+    st.markdown("##### Got receipts?")
+    uploaded_image = st.file_uploader("", type=["jpg", "jpeg", "png"])
 
-    submitted = st.form_submit_button("Go fetch the wisdom")
+st.markdown("---")
+submit_button = st.button("Go fetch the wisdom")
 
 if submit_button and user_query:
     with st.spinner("Consulting the archives..."):
