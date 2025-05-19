@@ -33,7 +33,7 @@ with col_query:
     user_query = st.text_input("", placeholder="e.g. What's up with AI in April 2024?")
 
 with col_image:
-    st.markdown("##### Got receipts?")
+    st.markdown("##### Optional visual evidence")
     uploaded_image = st.file_uploader("", type=["jpg", "jpeg", "png"])
 
 st.markdown("---")
