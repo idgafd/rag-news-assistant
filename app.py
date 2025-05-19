@@ -45,7 +45,7 @@ if submit_button and user_query:
 
         # Display Answer
         st.markdown("---")
-        st.subheader("The Oracle Speaks")
+        st.subheader("A possibly intelligent answer")
         if articles:
             answer = answer_user_query(user_query, articles)
             st.write(answer)
