@@ -18,33 +18,34 @@ client = OpenAI(api_key=api_key)
 st.set_page_config(page_title="AI News Assistant", layout="wide")
 st.markdown("""
 <style>
-:root {
-    --primary-color: #d86dfb; /* рожево-фіолетовий */
-    --primary-color-light: #ebadff;
-    --text-color: white;
-}
-
-/* Активні кнопки */
+/* Зміна кольору тексту та бордеру кнопки */
 div.stButton > button {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+    color: #d86dfb !important;
+    border: 1px solid #d86dfb !important;
+    background-color: transparent !important;
+    font-weight: 600;
 }
 
-/* Hover */
+/* Hover: підкреслимо кольором */
 div.stButton > button:hover {
-    background-color: #b958e0 !important;
+    color: #f0bfff !important;
+    border-color: #f0bfff !important;
+    cursor: pointer;
 }
 
-/* Active */
-div.stButton > button:active {
-    background-color: #9b42c2 !important;
-    transform: scale(0.97);
+/* Expander заголовок */
+details > summary {
+    color: #d86dfb !important;
+    font-weight: 600;
+}
+
+/* Expander при наведенні */
+details:hover > summary {
+    color: #f0bfff !important;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 st.markdown("<h1 style='text-align: center;'>AI News Assistant</h1>", unsafe_allow_html=True)
