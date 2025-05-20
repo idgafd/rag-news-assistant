@@ -15,6 +15,7 @@ if not api_key:
     raise EnvironmentError("OPENAI_API_KEY is not set in secrets or .env")
 client = OpenAI(api_key=api_key)
 
+st.set_page_config(page_title="AI News Assistant", layout="wide")
 st.markdown("""
 <style>
 :root {
@@ -45,8 +46,6 @@ div.stButton > button:active {
 </style>
 """, unsafe_allow_html=True)
 
-
-st.set_page_config(page_title="AI News Assistant", layout="wide")
 
 st.markdown("<h1 style='text-align: center;'>AI News Assistant</h1>", unsafe_allow_html=True)
 st.markdown(
