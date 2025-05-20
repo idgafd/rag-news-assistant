@@ -74,7 +74,6 @@ if submit_button and user_query:
             answer = fallback_answer_user_query(user_query)
             st.write(f"*{answer}*")
 
-        # Resources
         st.markdown("### Footnotes from the past (aka. Sources)")
         if articles:
             with st.expander("Click to reveal the boring but important stuff"):
