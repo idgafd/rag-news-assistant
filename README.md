@@ -4,7 +4,9 @@
 
 RAG News Assistant is your curious, slightly sarcastic AI sidekick for exploring the world of tech news. Just ask a question — or throw in an image for extra info — and it’ll fetch the most relevant articles, summarize them, and serve you a snappy answer.
 
+## Demo
 
+[![Watch the demo](https://img.youtube.com/vi/3WH7H8GRvGc/0.jpg)](https://youtu.be/3WH7H8GRvGc)
 
 ## What It Can Do
 
