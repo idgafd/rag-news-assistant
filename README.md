@@ -71,7 +71,7 @@ rag-news-assistant/
 └── requirements.txt
 ```
 
----
+
 
 ## Run It Locally
 
@@ -81,7 +81,7 @@ streamlit run app.py
 
 Or try the local `core_pipeline.py` with help of example usage
 
----
+
 
 ## Tech Behind the Scenes
 
@@ -91,7 +91,7 @@ Or try the local `core_pipeline.py` with help of example usage
 * **SentenceTransformers + CLIP + BLIP** for text and image embeddings
 * **BeautifulSoup** for adding new scraped sources
 
----
+
 
 ## Notes
 
@@ -99,4 +99,4 @@ Or try the local `core_pipeline.py` with help of example usage
 * Combined text + image caption embeddings power retrieval
 * If nothing is found — GPT jumps in with a general answer
 
----
+
