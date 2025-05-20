@@ -16,6 +16,38 @@ if not api_key:
 client = OpenAI(api_key=api_key)
 
 st.set_page_config(page_title="AI News Assistant", layout="wide")
+st.markdown("""
+<style>
+/* Submit-кнопка — тільки при наведенні/натисканні */
+div.stButton > button:hover {
+    color: #d86dfb !important;
+    border-color: #d86dfb !important;
+    cursor: pointer;
+}
+div.stButton > button:active {
+    color: #b44be2 !important;
+    border-color: #b44be2 !important;
+}
+
+/* Expander — при наведенні */
+details:hover > summary {
+    color: #d86dfb !important;
+}
+
+/* File uploader ("Browse files") — змінюємо лише при наведенні */
+.css-1uixxvy:hover {
+    border: 1px solid #d86dfb !important;
+    color: #d86dfb !important;
+}
+
+/* Активний стан (натиснута кнопка "browse") */
+.css-1uixxvy:active {
+    border: 1px solid #b44be2 !important;
+    color: #b44be2 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 st.markdown("<h1 style='text-align: center;'>AI News Assistant</h1>", unsafe_allow_html=True)
 st.markdown(
