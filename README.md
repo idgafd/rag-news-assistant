@@ -4,7 +4,7 @@
 
 RAG News Assistant is your curious, slightly sarcastic AI sidekick for exploring the world of tech news. Just ask a question — or throw in an image for extra info — and it’ll fetch the most relevant articles, summarize them, and serve you a snappy answer.
 
----
+
 
 ## What It Can Do
 
@@ -14,7 +14,7 @@ RAG News Assistant is your curious, slightly sarcastic AI sidekick for exploring
 * Uses GPT-4 Turbo to answer your question based on retrieved info
 * Falls back to GPT’s general knowledge if no article is relevant
 
----
+
 
 ## How to Get It Running
 
@@ -53,7 +53,7 @@ OPENAI_API_KEY = "your_openai_key"
 
 Run `batch_parser.py` with necessary date filters to fetch relevant weekly news
 
----
+
 
 ## Project Structure
 
