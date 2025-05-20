@@ -1,6 +1,6 @@
 # RAG News Assistant
 
-[🔗 Launch the App](https://rag-news-assistant-fpbvl4ndjsx2vrhjmtmsxy.streamlit.app/)
+
 
 RAG News Assistant is your curious, slightly sarcastic AI sidekick for exploring the world of tech news. Just ask a question — or throw in an image for extra info — and it’ll fetch the most relevant articles, summarize them, and serve you a snappy answer.
 
