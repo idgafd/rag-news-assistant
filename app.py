@@ -15,6 +15,37 @@ if not api_key:
     raise EnvironmentError("OPENAI_API_KEY is not set in secrets or .env")
 client = OpenAI(api_key=api_key)
 
+st.markdown("""
+<style>
+:root {
+    --primary-color: #d86dfb; /* рожево-фіолетовий */
+    --primary-color-light: #ebadff;
+    --text-color: white;
+}
+
+/* Активні кнопки */
+div.stButton > button {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover */
+div.stButton > button:hover {
+    background-color: #b958e0 !important;
+}
+
+/* Active */
+div.stButton > button:active {
+    background-color: #9b42c2 !important;
+    transform: scale(0.97);
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 st.set_page_config(page_title="AI News Assistant", layout="wide")
 
 st.markdown("<h1 style='text-align: center;'>AI News Assistant</h1>", unsafe_allow_html=True)
@@ -36,33 +67,6 @@ with col_image:
     uploaded_image = st.file_uploader("", type=["jpg", "jpeg", "png"])
 
 st.markdown("---")
-st.markdown("""
-<style>
-div.stButton > button {
-    background-color: #e49bff !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 0.6em 1.5em !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    transition: background-color 0.3s ease, transform 0.1s ease !important;
-    box-shadow: 0 4px 8px rgba(228, 155, 255, 0.4) !important;
-}
-
-div.stButton > button:hover {
-    background-color: #c35bfa !important;
-    box-shadow: 0 6px 12px rgba(195, 91, 250, 0.5) !important;
-}
-
-div.stButton > button:active {
-    background-color: #a12ed4 !important;
-    transform: scale(0.98) !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-
 submit_button = st.button("Go fetch the wisdom")
 
 if submit_button and user_query:
