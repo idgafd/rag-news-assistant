@@ -1,19 +1,21 @@
 import streamlit as st
 from openai import OpenAI
 
-from openai_wrapper import route_user_query, answer_user_query, fallback_answer_user_query
+from clients.openai_client_wrapper import OpenAIRouterClient
 from core_pipeline import execute_routed_call, format_resources_block
-from config import OPENAI_API_KEY
+# from config import OPENAI_API_KEY
 
 import itertools
 import time
 import random
 
 
-api_key = OPENAI_API_KEY
-if not api_key:
-    raise EnvironmentError("OPENAI_API_KEY is not set in secrets or .env")
-client = OpenAI(api_key=api_key)
+# api_key = OPENAI_API_KEY
+# if not api_key:
+#     raise EnvironmentError("OPENAI_API_KEY is not set in secrets or .env")
+# client = OpenAI(api_key=api_key)
+
+openai_client = OpenAIRouterClient()
 
 st.set_page_config(page_title="AI News Assistant", layout="wide")
 
@@ -47,7 +49,7 @@ if submit_button and user_query:
             with open(image_path, "wb") as f:
                 f.write(uploaded_image.getbuffer())
 
-        call = route_user_query(user_query, image_path=image_path)
+        call = openai_client.route_user_query(user_query, image_path=image_path)
         articles = execute_routed_call(call)
 
         st.markdown("---")
@@ -68,10 +70,10 @@ if submit_button and user_query:
         st.subheader(random.choice(subheader_variants))
 
         if articles:
-            answer = answer_user_query(user_query, articles)
+            answer = openai_client.answer_user_query(user_query, articles)
             st.write(answer)
         else:
-            answer = fallback_answer_user_query(user_query)
+            answer = openai_client.fallback_answer_user_query(user_query)
             st.write(f"*{answer}*")
 
         st.markdown("### Footnotes from the past (aka. Sources)")

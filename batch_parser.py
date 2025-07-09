@@ -1,11 +1,14 @@
 import uuid
 import requests
+import logging
 from datetime import datetime
 from urllib.parse import parse_qs, urlparse
 from bs4 import BeautifulSoup
 
-from qdrant_client_wrapper import upload_points, delete_all_points
+from clients.qdrant_client_wrapper import QdrantVectorStoreClient
 from utils import generate_combined_embedding_with_metadata
+
+logger = logging.getLogger(__name__)
 
 
 def format_date(date_str):
@@ -263,15 +266,25 @@ def convert_to_qdrant_points(all_subarticles):
     return points
 
 
-def run_pipeline(max_pages=10, date_from="2025-05-01", date_to="2025-05-15"):
-    delete_all_points(filter={"must": [{"key": "date_int",
+def run_pipeline_for_range(date_from: str, date_to: str, max_pages: int = 10):
+    """
+    Run full pipeline from scraping, processing, embedding and uploading articles to Qdrant
+    for a given date range.
+    """
+    qdrant_client = QdrantVectorStoreClient()
+
+    logger.info(f"Deleting points in Qdrant for range {date_from} to {date_to}")
+    qdrant_client.delete_all_points(filter={"must": [{"key": "date_int",
                                         "range": {"gte": int(date_from.replace("-", "")),
                                                   "lte": int(date_to.replace("-", ""))}}]})
 
     articles = parse_the_batch_pages(max_pages=max_pages, date_from=date_from, date_to=date_to)
+    logger.info(f"Found {len(articles)} articles for processing.")
+
     all_subarticles = []
 
     for article in articles:
+        logger.debug(f"Parsing content from {article['url']}")
         content = parse_article_content(article['url'])
         if not content:
             continue
@@ -290,15 +303,13 @@ def run_pipeline(max_pages=10, date_from="2025-05-01", date_to="2025-05-15"):
         subarticles = process_article(article, content["content"])
         all_subarticles.extend(subarticles)
 
+    logger.info(f"Total subarticles to embed: {len(all_subarticles)}")
+
     for entry in all_subarticles:
         enriched = generate_combined_embedding_with_metadata(entry["text"], entry.get("image"))
         entry.update(enriched)
 
     points = convert_to_qdrant_points(all_subarticles)
-
-    upload_points(points)
-
-
-# Example of use
-# run_pipeline(max_pages=20, date_from="2024-12-31", date_to="2025-12-31")
-
+    logger.info(f"Uploading {len(points)} points to Qdrant")
+    qdrant_client.upload_points(points)
+    logger.info("Pipeline completed.")

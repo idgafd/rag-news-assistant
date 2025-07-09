@@ -4,7 +4,7 @@ import requests
 import torch
 from typing import Optional, List, Dict, Any
 
-from qdrant_client_wrapper import search_similar_points, search_points_by_date_range
+from clients.qdrant_client_wrapper import QdrantVectorStoreClient
 
 
 def load_image(image_source: str) -> Image.Image:
@@ -77,6 +77,8 @@ def rerank_results(query: str, candidates: List, top_k: int = 5) -> List:
 
 def search_similar_articles(prompt: str, top_k: int = 5, date_from: Optional[str] = None,
                             date_to: Optional[str] = None) -> List:
+    qdrant_client = QdrantVectorStoreClient()
+
     embedding = generate_text_embedding(prompt)
 
     filters = None
@@ -88,17 +90,21 @@ def search_similar_articles(prompt: str, top_k: int = 5, date_from: Optional[str
         except:
             pass
 
-    candidates = search_similar_points(query_vector=embedding, top_k=top_k*2, filters=filters, exact=True)
+    candidates = qdrant_client.search_similar_points(query_vector=embedding, top_k=top_k*2, filters=filters, exact=True)
     ranked = rerank_results(query=prompt, candidates=candidates.points, top_k=top_k)
 
     return clean_points(ranked)
 
 
 def get_articles_by_date_range(date_from: str, date_to: str) -> List:
-    return search_points_by_date_range(date_from, date_to)
+    qdrant_client = QdrantVectorStoreClient()
+
+    return qdrant_client.search_points_by_date_range(date_from, date_to)
 
 
 def find_by_uploaded_image(image_path_or_url: str, prompt: Optional[str] = None) -> List:
+    qdrant_client = QdrantVectorStoreClient()
+
     if prompt:
         text_embedding = generate_text_embedding(prompt)
         sim_threshold = 0.7
@@ -107,7 +113,7 @@ def find_by_uploaded_image(image_path_or_url: str, prompt: Optional[str] = None)
         text_embedding = generate_text_embedding(f"[IMAGE]: {image_caption}")
         sim_threshold = 0.65
 
-    candidates = search_similar_points(query_vector=text_embedding, top_k=10)
+    candidates = qdrant_client.search_similar_points(query_vector=text_embedding, top_k=10)
 
     image_embedding = generate_image_embedding(image_path_or_url)
     if not image_embedding:
