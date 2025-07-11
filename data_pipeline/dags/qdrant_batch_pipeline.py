@@ -1,10 +1,10 @@
 import logging
 from datetime import datetime, timedelta
 
-from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
+from airflow.sdk import DAG
 
-from data_pipeline.batch_parser import run_pipeline_for_range
+from data_pipeline.parse_raw_batch_data import run_pipeline_for_range
 
 
 # Configure logging
@@ -39,10 +39,10 @@ with DAG(
     dag_id="qdrant_the_batch_weekly",
     description="Weekly pipeline to ingest The Batch articles into Qdrant",
     start_date=datetime(2024, 1, 1),
-    schedule_interval="0 6 * * MON",
+    schedule="0 6 * * MON",
     catchup=False,
     max_active_runs=1,
-    tags=["qdrant", "the_batch", "weekly"],
+    tags={"qdrant", "the_batch", "weekly"},
 ) as dag:
 
     run_pipeline_task = PythonOperator(
