@@ -75,52 +75,52 @@ def generate_training_data(**context):
     return f"Generated training data for {date_from} to {date_to}"
 
 
-# def check_training_data(**context):
-#     """
-#     Check if we have enough training data to trigger model training
-#     """
-#     # You can implement logic to check data volume
-#     # For now, we'll trigger training every 7 days
-#     execution_date = context['execution_date']
-#     day_of_week = execution_date.weekday()
-#
-#     if day_of_week == 6:  # Sunday
-#         return "trigger_training"
-#     else:
-#         return "skip_training"
-#
-#
-# def train_model(**context):
-#     """
-#     Train the reranker model
-#     """
-#     from datetime import datetime, timedelta
-#
-#     # Calculate date range for training (last 30 days)
-#     execution_date = context['execution_date']
-#     date_to = execution_date.strftime('%Y-%m-%d')
-#     date_from = (execution_date - timedelta(days=30)).strftime('%Y-%m-%d')
-#
-#     # Import your training function
-#     from train_reranker import main
-#     import argparse
-#
-#     # Create args object
-#     args = argparse.Namespace(
-#         base_model="microsoft/MiniLM-L12-H384-uncased",
-#         epochs=2,
-#         batch_size=32,
-#         output_dir="/opt/airflow/models/reranker",
-#         date_from=date_from,
-#         date_to=date_to,
-#         num_negatives=4
-#     )
-#
-#     print(f"Training model with data from {date_from} to {date_to}")
-#     # You'll need to modify your main function to accept args directly
-#     # or create a wrapper function
-#
-#     return f"Trained model with data from {date_from} to {date_to}"
+def check_training_data(**context):
+    """
+    Check if we have enough training data to trigger model training
+    """
+    # You can implement logic to check data volume
+    # For now, we'll trigger training every 7 days
+    execution_date = context['execution_date']
+    day_of_week = execution_date.weekday()
+
+    if day_of_week == 6:  # Sunday
+        return "trigger_training"
+    else:
+        return "skip_training"
+
+
+def train_model(**context):
+    """
+    Train the reranker model
+    """
+    from datetime import datetime, timedelta
+
+    # Calculate date range for training (last 30 days)
+    execution_date = context['execution_date']
+    date_to = execution_date.strftime('%Y-%m-%d')
+    date_from = (execution_date - timedelta(days=30)).strftime('%Y-%m-%d')
+
+    # Import your training function
+    from train_reranker import main
+    import argparse
+
+    # Create args object
+    args = argparse.Namespace(
+        base_model="microsoft/MiniLM-L12-H384-uncased",
+        epochs=2,
+        batch_size=32,
+        output_dir="/opt/airflow/models/reranker",
+        date_from=date_from,
+        date_to=date_to,
+        num_negatives=4
+    )
+
+    print(f"Training model with data from {date_from} to {date_to}")
+    # You'll need to modify your main function to accept args directly
+    # or create a wrapper function
+
+    return f"Trained model with data from {date_from} to {date_to}"
 
 
 # Define tasks
@@ -136,18 +136,17 @@ generate_data_task = PythonOperator(
     dag=dag,
 )
 
-# check_data_task = PythonOperator(
-#     task_id='check_training_data',
-#     python_callable=check_training_data,
-#     dag=dag,
-# )
-#
-# train_task = PythonOperator(
-#     task_id='train_model',
-#     python_callable=train_model,
-#     dag=dag,
-# )
 
-# Define task dependencies
-# scrape_task >> generate_data_task >> check_data_task >> train_task
-scrape_task >> generate_data_task
+check_data_task = PythonOperator(
+    task_id='check_training_data',
+    python_callable=check_training_data,
+    dag=dag,
+)
+
+train_task = PythonOperator(
+    task_id='train_model',
+    python_callable=train_model,
+    dag=dag,
+)
+
+scrape_task >> generate_data_task >> check_data_task >> train_task
