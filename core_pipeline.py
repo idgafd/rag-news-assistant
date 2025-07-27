@@ -1,7 +1,5 @@
 from utils import search_similar_articles, get_articles_by_date_range, find_by_uploaded_image
 
-from clients.openai_client_wrapper import route_user_query, answer_user_query, fallback_answer_user_query
-
 from typing import List, Dict
 
 

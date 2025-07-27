@@ -33,3 +33,5 @@ RUN mkdir -p /opt/airflow/dags
 USER root
 RUN chown -R airflow:root /opt/airflow
 USER airflow
+
+
