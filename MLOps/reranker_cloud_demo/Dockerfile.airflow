@@ -1,0 +1,35 @@
+FROM apache/airflow:2.7.3-python3.11
+
+USER root
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    curl \
+    git \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+USER airflow
+
+COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
+
+RUN pip install --no-cache-dir \
+    apache-airflow-providers-amazon \
+    apache-airflow-providers-postgres \
+    apache-airflow-providers-http \
+    apache-airflow-providers-docker
+
+COPY --chown=airflow:root . /opt/airflow/project/
+
+ENV PYTHONPATH=/opt/airflow:/opt/airflow/project
+ENV AIRFLOW_HOME=/opt/airflow
+
+RUN mkdir -p /opt/airflow/logs
+RUN mkdir -p /opt/airflow/plugins
+RUN mkdir -p /opt/airflow/dags
+
+USER root
+RUN chown -R airflow:root /opt/airflow
+USER airflow
